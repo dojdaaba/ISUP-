@@ -1,0 +1,764 @@
+#' ---	
+#' title: "Projet de RN"	
+#' author: "Douba JAFUNO"	
+#' date: "`r format(Sys.time(), '%d %B %Y')`"	
+#' output:	
+#'   html_document:	
+#'     df_print: paged	
+#'   word_document: default	
+#'   pdf_document: default	
+#' toc: yes	
+#' toc_depth: 2	
+#' ---	
+#' 	
+#' 	
+#' 	
+knitr::opts_chunk$set(echo = TRUE)	
+#' 	
+#' 	
+#' \newpage	
+#' 	
+#' # Présentation succinte des réseaux de neurone 	
+#' 	
+#' ## Introduction	
+#' 	
+#' Un « réseau neuronal » est un modèle mathématique appelé neurone artificiel qui représente les cellules neuronales (neurones) du cerveau humain et leurs connexions. Ces dernières années, le domaine de l'intelligence artificielle (IA) est en plein essor ont le trouve dans de nombreux domaine de notre quotidien selon plusieurs experts il s’agirait tout simplement de l’avenir.  Les réseaux de neurones et l'apprentissage en profondeur sont de grands sujets en informatique et dans l'industrie des technologies, ils fournissent actuellement les meilleures solutions à de nombreux problèmes de reconnaissance d'image, de reconnaissance vocale et de traitement du langage naturel par exemple tout au long de ce projet nous verrons des exemples d’application des réseaux de neurone particulièrement en classification. 	
+#' 	
+#' 	
+#' ## Définitions	
+#' 	
+#' Un réseau de neurones est un assemblage interconnecté d'éléments, un graphe orienté pondéré, d'unités ou de nœuds (que l’on qualifie de neurone artificiel, modélisant mathématiquement le comportement d’un neurone biologique), qui réalise des traitements simples, structurées sous forme de couches successives interconnectées capables de recevoir et d’échanger des informations via des liens structurés.	
+#' 	
+#' 	
+#' ###	Structure d’un Neurone Artificiel	
+#' 	
+#' 	
+#' 	
+#' Un neurone artificiel $i$ est représenté par une fonction $U(i)$ de l'entrée $X = (X_1, ...,X_N)$ avec les $X_i$ des valeurs numériques, pondérée par un vecteur de poids de connexion $w_i = (w_{i,1},..,w_{i,N})$ correspondant à la ième ligne de la matrice $W=w_{i,j\ \ \ 1\le i,j\le N}$ ou $w_{i,j}$ est le poids de connexion du neurone $j$ vers le neurone $i$, complétée par un biais $b_i$ , et associée à une fonction d'activation $f$ éventuellement muni d’un seuil $S_i$ , et tel que nous avons en sortie $Y_i=f(<w_i,X>+\ b_i)$.	
+#' 	
+#' 	
+#' ## Apprentissage	
+#' 	
+#' 	
+#' La règle d’apprentissage ou le processus d’apprentissage d’un réseau de neurones artificiels est une méthode, mathématique ou un algorithme qui améliore les performances et / ou le temps de formation du réseau. Habituellement, cette règle est appliquée à plusieurs reprises sur le réseau. Cela se fait en mettant à jour les poids de connexion via la matrice W et les niveaux de biais d'un réseau lorsque celui-ci est simulé dans un environnement de données spécifique. Le comportement d’un neurone dépend en effet des poids mais aussi du seuil d’activation qui lui est associé, Il est difficile voire même impossible de prédire les valeurs de ces deux paramètres pendant la phase de conception d’où le recours inévitable à l’apprentissage et cela tout en faisant subir au système un ensemble de stimulations itératives. Une règle d'apprentissage peut accepter les conditions existantes (poids et biais) du réseau et comparera le résultat attendu et le résultat réel du réseau sous formes d’erreur pour donner des valeurs nouvelles et améliorées pour les poids et les biais tout en réduisant cette même erreur afin que le réseau n’ait plus besoin d’apprentissage après avoir eu le comportement le mieux adapté pour la fonction cible.	
+#' On distingue deux catégories de règles d’apprentissage : l’apprentissage supervisé et le non-supervisé	
+#' 	
+#' 	
+#' ###	Règle d’apprentissage supervisé	
+#' 	
+#' L’apprentissage supervisé consiste à créer une relation (correspondance) entre une excitation ou stimulus en entrée et la réponse associée. Ainsi, la base d’apprentissage est présentée sous forme d’un ensemble de couples : stimulus et réponse cible associée $(x_{i}, c_{i})$. D’autre part, les neurones situés sur la couche de sortie du réseau sont étiquetés de manière à ce que pour une entrée de valeur bien déterminée $x_i$, le neurone activé à la fin de la phase d’apprentissage soit celui qui porte la cible $c_i$ correspondante à la réponse associée attendue pour l’entrée $x_i$. Ici la technique consiste à évaluer l’erreur pour chaque stimulus et modifier les paramètres libres des neurones afin de minimiser l’erreur dans les prochaines itérations. En cas de discordance, il faut affaiblir les poids de connexion des neurones actifs. Par contre, en cas de correspondance entre la réponse et le stimulus, la procédure consiste à renforcer les poids des neurones actifs. 	
+#' Différents domaines d’application sont associés aux algorithmes à base de règle d’apprentissage supervisé Parmi les algorithmes d’apprentissage supervisé les plus répandus, nous pouvons citer ceux vu en cours comme la règle Delta  et les algorithmes de retro-propagation du gradient très utilisés par le modèle Perceptron Multi Couches (PMC) que nous verrons ci-dessous: 	
+#' 	
+#' **Peceptron multicouche**	
+#' 	
+#' 	
+#' Un Perceptron Multi Couches (PMC) est un réseau neuronal artificiel composé de plusieurs couches, de telle sorte qu'il a la capacité de résoudre des problèmes qui ne sont pas linéairement séparables. Les couches peuvent être classées en trois types :	
+#' •	Couche d’entrée : composée de ces neurones qui introduisent des modèles d'entrée dans le réseau. Aucun traitement ne se produit dans ces neurones.	
+#' •	Couches cachées : formées par les neurones dont les entrées proviennent des couches précédentes et dont les sorties vont aux neurones des couches ultérieures.	
+#' •	Couche de sortie : Neurones dont les valeurs de sortie correspondent aux sorties de l'ensemble du réseau.	
+#' 	
+#' 	
+#' 	
+#' ** Rétropropagation du Gradient **	
+#' 	
+#' Les poids dans le réseau de neurones sont au préalable initialisés avec des valeurs aléatoires. On considère ensuite un ensemble de données qui vont servir à l'apprentissage. Chaque échantillon possède ses valeurs cibles qui sont celles que le réseau de neurones doit à terme prédire lorsqu'on lui présente le même échantillon. L'algorithme suit les étapes suivantes. 	
+#' 	
+#' * Soient un échantillon $\vec{x}$ que l'on présente à l'entrée du réseau de neurones et $\vec{t}$ la sortie recherchée pour cet échantillon.	
+#' * On propage le signal en avant dans les couches du réseau de neurones : $x_k^{(n-1)}\mapsto x_j^{(n)}$, avec $n$ le numéro de la couche.	
+#' * La propagation vers l'avant se calcule à l'aide de la fonction d'activation $g$, de la fonction d'agrégation $h$ (souvent un produit scalaire entre les poids et les entrées du neurone) et des poids synaptiques $\vec{w}_{jk}$ entre le neurone $x_k^{(n-1)}$ et le neurone $x_j^{(n)}$. La notation est alors inversée : $\vec{w}_{jk}$ indique bien un poids de $k$ vers $j$.	
+#'    	
+#'    $x_j^{(n)} = g^{(n)}(h_j^{(n)}) = g^{(n)}(\sum_k w_{jk}^{(n)}x_k^{(n-1)})$	
+#'    	
+#'    	
+#' 	
+#' * Lorsque la propagation vers l'avant est terminée, on obtient à la sortie le résultat $\vec{y}$.	
+#' * On calcule alors l'erreur entre la sortie donnée par le réseau $\vec{y}$ et le vecteur $\vec{t}$ désiré à la sortie pour cet échantillon. Pour chaque neurone $i$ dans la couche de sortie, on calcule (g' étant la dérivée de g):	
+#'    	
+#'    $e_i^{sortie} = g'(h_i^{sortie})(y_i - t_i)$	
+#' 	
+#' * On propage l'erreur vers l'arrière $e_i^{(n)} \mapsto e_j^{(n-1)}$ grâce à la formule suivante :	
+#'    	
+#'    $e_j^{(n-1)} = g'^{(n-1)}(h_j^{(n-1)})\sum_i w_{ij}^{(n)}e_i^{(n)}$	
+#' 	
+#'    note: ''$e_i^{(n)} = e_i^{sortie}=(y_i - t_i) \frac{\partial y_i}{\partial h_i^{(n)}}$	
+#'    	
+#'    	
+#' 	
+#' ###	Règle d’apprentissage non-supervisé	
+#' 	
+#' Contrairement à la règle d’apprentissage supervisé, dans l’apprentissage non supervisé il n’existe pas de catégories préalables selon lesquelles les entrées doivent être regroupées. L’affectation d’un stimulus en entrée sera automatiquement gérée par le réseau afin de générer à la fin de la phase d’apprentissage une sorte de carte d’affectation permettant de regrouper les entrées. Pour cette raison, cette catégorie d’algorithmes d’apprentissage est souvent appelée algorithme de clustering (regroupement et séparation). A chaque itération, le rôle du réseau est d’analyser les relations entre les stimuli de chaque entrée et extraire les associations. Au cours de la phase d’apprentissage, les poids de connexion du réseau de neurones seront modifiés afin de fournir une régularité de classement. L’objectif du réseau est donc d’identifier la similarité des entrées présentes sur la base d’apprentissage afin de bien les regrouper. Ainsi, la finalité de l’apprentissage est de minimiser la similarité interclasses et maximiser la similarité intra classes. Après avoir terminé la phase d’apprentissage, le réseau sera en mesure de regrouper les entrées aléatoires selon leurs similitudes pendant la phase d’utilisation, pour certaines applications, une opération d’étiquetage parait obligatoire au cours de la transition entre la phase d’apprentissage et celle de décision. Cette dernière commencera par la présentation d’un ensemble de stimuli appelé base de test qui n’appartient pas à notre échantillon d’apprentissage en entrée. Cette base est composée des couples (stimulus, étiquette). A la fin de l’opération d’étiquetage, chaque neurone sur la couche de sortie aura étiqueté une classe. C’est une sorte de supervision de la règle dite non supervisée. Toutefois elle n’est nécessaire que pour certaines applications et peut ensuite être suivi par une « validation » validé par une base de validation que l’on retrouve notamment dans la validation croisée	
+#' 	
+#' Les algorithmes à base de règle d’apprentissage non supervisé sont souvent utilisés pour des fonctions de clustering Parmi les algorithmes d’apprentissage non supervisé les plus connus, on trouve la règle de Hebb , la règle K-moyenne et la règle des mémoires associatives proposées par Kohonen en 1977 	
+#' 	
+#' 	
+#' 	
+#' 	
+#' 	
+#' 	
+#' # Démonstration logicielle utilisant un Perceptron (multicouche)	
+#' 	
+#' ## Prédiction sur une série temporelle	
+#' 	
+#' Sur R nous j'ai choisis une démonstration logicielle utilisant un perceptron multicouche avec la librairie **nnet**. Mon but a été de prédire une série temporelle **$Y_t= 2+ 3*sin(2t+4)+0.1t^2 + Z$** avec 200 réalisations et des valeurs prises pour t dans [0,20] avec Z Bruit Blanc Gaussien $N(0,1)$ 	
+#' 	
+#' Le but a été de prédire **$Y_t$** à partir de ces valeur décalée (Lag package dplyr) de 1 : **$y_1$** et de 2 : **$y_2$** qui seront des échantillons de tailles 199 et 198. Pour cela j'ai comparé le PMC avec 3 autres méthodes d'apprentissage : **Régression linéaire multiple**,  **SVM** pour la régression  et **Random Forest** 	
+#' 	
+#' ## Création du "dataframe avec les données de la série décalé""	
+#' 	
+#' J'ai donc choisis de créer un data frame comprenant les colonnes y, x1 et x2 et réduit celui-ci de faons à ce qu'il contiennent 198 réalisations de ces 3 échantillons.	
+#' 	
+#' 	
+library(dplyr)	
+#' 	
+#' 	
+#' On met en place nos donnée lié à la série temporelle sous forme de Data Frame : 	
+#' 	
+#' 	
+#library(dplyr)	
+t <- seq(0,20,length=200)                       # time stamps	
+y <- 2 +3*sin(2*t+4) +.1*t^2 + rnorm(200) # Série temporelle que l'on veut prédire 	
+y1=lag(y,1) # y décalé de 1, 1 valeur manquante 	
+y2=lag(y,2)# y déclaé de 2, 2 valeur manquante 	
+	
+dat <- data.frame( y, y1, y2) # triplet avec des valeurs décalées	
+names(dat) <- c('y','y1','y2')	
+dat <- dat[c(3:200),] # Pas de prise en compte des lignes contenant des valeurs manquantes 	
+head(dat)	
+#' 	
+#' ## Comparaison du PMC avec d'autre méthode d'apprentissage 	
+#' 	
+#' 	
+#' ### PMC	
+#' 	
+#' Pour le **Perceptron multicouche** nous utiliseront la library **nnet** de R. Tout d'abord le paramètre important à déterminer est **le nombre de neurones sur la couche cachée** (size) parallèlement aux conditions d'apprentissage (temps ou nombre de boucles), **j'ai choisi de faire une grille entre 3 et 10 pour size**. Une alternative ou un complément à la détermination du nombre de neurones est celle du **decay** qui est un paramètre de régularisation analogue à celui utilisé en régression ridge. 	
+#' 	
+#' L'optimisation des paramètres nécessite encore le passage par la validation croisée. Il n'y a pas de fonction dans la librairie nnet permettant de le faire mais la fonction tune.nnet de la **librairie e1071** est adaptée à cette démarche nous l'utiliserons comme suit.	
+#' 	
+#' 	
+library(nnet)	
+library(NeuralNetTools)	
+#' 	
+#' 	
+#' 	
+#' 	
+#library(nnet)	
+library(e1071)	
+#library(NeuralNetTools)	
+tune.model=tune.nnet(y~.,data=dat,size=3:10,decay=c(0.1,0.001,0.00001),maxit=200,linout=TRUE)	
+plot(tune.model) 	
+	
+#' 	
+#' 	
+#' 	
+tune.model	
+#' 	
+#' 	
+#' 	
+#' 	
+print(paste("Pour le PMC nous choisissons donc une couche cachée avec",as.character(tune.model$best.parameters$size) ,"neurones et un decay de" ,as.character(tune.model$best.parameters$decay)))	
+#' 	
+#' 	
+#' Nous définissons désormais notre modèle avec les paramètres retenus et avec le nombre de neurone dans la couche cachée  	
+#' 	
+#' 	
+model <- nnet(y ~ y1+y2, dat,size=tune.model$best.parameters$size,decay=tune.model$best.parameters$decay,maxit=100,linout=TRUE)	
+#' 	
+#' 	
+#' Voici un schéma de notre perceptron :	
+#' 	
+plotnet(model, alpha=0.6)	
+#' 	
+#' 	
+#' 	
+#' ### Régression Linéaire Multiple	
+#' 	
+#' **Modèle de Régression Linéaire Multiple**	
+#' 	
+#' 	
+myreg=lm(y~y1+y2,dat)	
+leg <- predict(myreg, dat)  	
+	
+#' 	
+#' 	
+#' 	
+#' ### SVM 	
+#' 	
+#' Afin d'améliorer les performances de la régression du SVM, nous devrons sélectionner les meilleurs paramètres pour le modèle, il s'agit du paramètre epsilon de la régression et le cout (cost).J'ai donc utilisé comme pour nnet la commande tune de la librairie (e1071) pour avoir une grille de recherche de ses 2 paramètres. 	
+#' 	
+#' 	
+#' 	
+#' 	
+tune.result <- tune(svm,y~.,data = dat, 	
+ranges = list(epsilon = seq(0,1,0.1), 	
+cost = c(3.25,3.5,4,4.5,4.75)))	
+plot(tune.result)	
+	
+tune.result	
+	
+#' 	
+#' 	
+#' 	
+print(paste("Pour SVM nous choisissons epsilon=",as.character(tune.result$best.parameters$epsilon) ,"et un coût de" ,as.character(tune.result$best.parameters$cost)))	
+#' 	
+#' 	
+#' **Modèle SVM**	
+#' 	
+#' 	
+svmodel <- svm(y ~ y1+y2,data=dat, type="eps-regression",kernel="radial",cost=tune.result$best.parameters$cost,epsilon= tune.result$best.parameters$epsilon)	
+	
+#' 	
+#' 	
+#' 	
+#' ### Random Forest 	
+#' 	
+#' 	
+#' 	
+library(randomForest)	
+#' 	
+#' 	
+#' **Modèle Random Forest**	
+#' 	
+#' 	
+#library(randomForest)	
+rdf <- randomForest(y ~ y1+y2,data=dat)	
+#' 	
+#' 	
+#' ## Prévisions et Conclusion	
+#' 	
+#' 	
+#' Nous pouvons afficher l'ensemble des prévisions de la série temporelle $Y_t$ pour nos 4 modèles : 	
+#' 	
+#' 	
+#ps <- predict(model, dat)	
+ps <- predict(model, dat)	
+leg <- predict(myreg, dat)	
+svmp <- predict(svmodel, dat)	
+rdfp <- predict(rdf, dat)	
+#' 	
+#' 	
+#' 	
+library(ggplot2)	
+#' 	
+#' 	
+#' 	
+#' 	
+#library(ggplot2)	
+t <- seq(0,20,length=200)	
+t<-t[-c(1:2)]	
+df1<-data.frame(t,y=y[-c(1:2)], Type = as.factor("Série"), Method = as.factor("Temporelles"))	
+df2<-data.frame(t,y=ps, Type = as.factor("NN"), Method = as.factor("method1"))	
+df3<-data.frame(t,y=leg, Type = as.factor("REG"), Method = as.factor("method2"))	
+df4<-data.frame(t,y=svmp, Type = as.factor("SVM"), Method = as.factor("method3"))	
+df5<-data.frame(t,y=rdfp, Type = as.factor("RDF"), Method = as.factor("method4"))	
+df.merged <- rbind(df1, df2, df3, df4,df5) 	
+	
+ggplot(df.merged, aes(t, y, colour = interaction(Type, Method))) + geom_line()	
+	
+	
+#' 	
+#' 	
+#' 	
+#' 	
+#' Erreur quadratique moyenne de prévision: $MSE = \frac{1}{n}\sum\limits_{i=1}^n (\hat{Y}_i - Y_i)^2$	
+#' 	
+#' 	
+#' 	
+MSE.lm <- sum((leg - dat$y)^2)/nrow(dat)	
+#' 	
+#' 	
+#' 	
+#' 	
+MSE.svm <- sum((svmp - dat$y)^2)/nrow(dat)	
+#' 	
+#' 	
+#' 	
+MSE.rdf <- sum((rdfp - dat$y)^2)/nrow(dat)	
+#' 	
+#' 	
+#' 	
+MSE.nn <- sum((ps - dat$y)^2)/nrow(dat)	
+#' 	
+#' 	
+#' 	
+r <- cbind( c(MSE.rdf,MSE.nn,MSE.svm,MSE.lm),c("Non","Oui","Oui" ,"Non"))	
+rownames(r) <- c("Random Forest","Perceptron","SVM","Régression")	
+colnames(r) <- c("MSE" , "Grille param")	
+#' 	
+#' 	
+#' 	
+#' 	
+r	
+#' 	
+#' 	
+#' Nous voyons que **Random forest** est le plus performant 	
+#' 	
+#' \newpage 	
+#' 	
+#' # Démonstration logiciel utilisant les réseaux de neurones avec Scikit-Learn de Python 	
+#' 	
+#' Scikit-Learn est une grande librairie Python dédié à l'apprentissage automatique: Dans cette partie nous allons utilissé la classe **MLPClassifier** implémente un algorithme de perceptron multicouche (MLP) qui s'entraîne à l'aide de la rétropropagation 	
+#' 	
+#' 	
+#' tout d'abord nous utiliserons la classe make_blobs de scikit-klearn.datasets afin de générer un jeux de donnée de 150 variables et 2 observations  classisfication comportant 4 cluster. 	
+#' 	
+#' On peut representer nos 4 cluster défini par make_blobs comme suivant 	
+#' 	
+#' 	
+#' \newpage	
+#' 	
+#' # Démonstration logicielle utilisant les cartes de Kohenen	
+#' 	
+#' Dans les parties précédentes nous avons vu des applications utilisant les réseaux de neurones dans le cadre de  l'apprentissages supervisée cependant les réseaux de neurones peuvent aussi etre urilisé en apprentisssage non supervisée supervisée et aussi utilisé des méthodes de clustering, c'est ce que nous allons voir avec **les cartes de Kohenen**	
+#' 	
+#' ## Présentation	
+#' 	
+#' ### Principe Générale	
+#' 	
+#' D'un point de vue architectural la figure ci-dessus illustre bien le principes des cartes auto-organisatrices de Kohonen, les cartes auto-organisatrices de Kohonen sont constituées d'une grille (le plus souvent uni- ou bidimensionnelle). Dans chaque nœud de la grille se trouve un « neurone »: **r(2,3)**. Chaque neurone est lié à un vecteur référent $w_{r}$, responsable d'une zone dans l'espace des données  **$V$**  (appelé encore espace d'entrée ), un point x de cette espace muni d'une certaine distance correspond donc a une de nos donnée que l'ont aimerait bien représenter sur la grille.	
+#' 	
+#' ### Apprentissage	
+#' 	
+#' Chaque neurone a un vecteur référent qui le représente dans l'espace d'entrée. Tout d'abord un vecteur d'entrée v de l'espace des données  **$V$**  est présenté, **v** sélectionne ensuite le neurone vainqueur  **s** tel que:	
+#' 	
+#' $s = \arg \min_{r\in A} \left\|v - w_{r} \right\|$	
+#' 	
+#' s est donc le point le plus proche de v dans l'espace d'entrée **$V$** . 	
+#' 	
+#' Les vecteurs référents des autres neurones voisins de s  et s sont ensuite déplacés vers v, mais les vecteurs référents avec une amplitude moins importante que s.	
+#' 	
+#' En répétant tout ce qui a été dit avant pour chaque vecteur v de l'espace des données  **$V$** ,  c'est toute la région de la carte autour du neurone gagnant qui se spécialise. En fin d'algorithme, lorsque les neurones ne bougent plus, ou seulement très peu, à chaque itération, la carte auto-organisatrice recouvre toute la topologie des données.	
+#' 	
+#' ### Sur la notion de voisinage	
+#' 	
+#' Trois types de voisinages couramment utilisés pour les cartes de Kohonen sont les voisinages linéaires, rectangulaire et triangulaire.	
+#' 	
+#' Les neurones sont reliés les uns aux autres, c'est la **topologie** de la carte. La forme de la carte définit les voisinages des neurones et donc les liaisons entre neurones elle est s.	
+#' 	
+#' La fonction de voisinage décrit comment les neurones dans la proximité du vainqueur ''s'' sont entraînés dans le mouvement de correction. On utilise en général :	
+#' 	
+#' $h(r,s,t)= \exp \left( - \frac{\left\| \vec{r} - \vec{s} \right\|}{2 \sigma^{2}(t)} \right),$	
+#' 	
+#' où $\sigma$ s'appelle ''coefficient de voisinage''. Son rôle est de déterminer un rayon de voisinage autour du neurone vainqueur. 	
+#' 	
+#' La fonction de voisinage ''h'' force les neurones qui se trouvent dans le voisinage de ''s'' à rapprocher leurs vecteurs référents du vecteur d'entrée ''v''. 	
+#' Moins un neurone est proche du vainqueur dans la grille, moins son déplacement est important.	
+#' 	
+#' ##  Les cartes de Kohonen avec R (package « kohonen ») sur les données **Iris**	
+#' 	
+#' Nous allons faire une démonstration logiciel des cartes de Kohonen avec la librairie Kohonen de R 	
+#' 	
+#' 	
+#' 	
+#' 	
+library(kohonen)	
+library(factoextra)	
+library("scatterplot3d")	
+library(RColorBrewer)	
+	
+#' 	
+#' 	
+#' 	
+#' 	
+head(iris)	
+	
+#' 	
+#' 	
+#' 	
+#' Tout d'abord j'ai découpé les données en 2 avec 100 données dans le corpus d'enrainement(**Train**) et 50 dans le corpus de test (**Test**) et tout cela dans une liste, on en verra l'utilité. 	
+#' 	
+#' 	
+index<- sample(1:150, 100) 	
+train_ <-  list( x = as.matrix(iris[index,-5]), Species = as.factor(iris[index,5]))   #Taille 100	
+test_<- list(x = as.matrix(iris[-index,-5]), Species = as.factor(iris[-index,5]))    #Taille 50	
+#' 	
+#' 	
+#' ### Construction du modèle de la carte avec Supersom 	
+#' 	
+#' 	
+carte <- supersom(train_, somgrid(xdim = 4, ydim = 5, topo = "hexagonal") , rlen = 500, alpha = c(0.05, 0.01)) 	
+	
+#' 	
+#' 	
+#' Le but de l'application du modèle Carte est de prédire le type d'iris en utilisant 4 valeurs numériques de **"Sepal.Length", "Sepal.Width", "Petal.Length" et "Petal.Width"** comme variables indépendantes.	
+#' 	
+#' Les fonctions **somgird()** et **Supersom()** du package kohonen sont des fonctions qui entraînent notre modèle carte. La fonction somgrid () est une fonction qui définit les types x, y et topologie de la couche de neurones (couche de sortie) rectangulaire ou héxagonal par exemple j'ai choisis** une carte de taille (4,5) et héxagonal**, et la fonction **Supersom()** est une fonction qui apprend le poids de chaque neurone via des données d'entrée ici j'ai choisis de séparer les données et les types d'iris (X et Species) afin de mieux géré les prédictions à venir pour obtenir des prédictions pour toutes les couches utilisées dans la formation pour les mesures et les fleurs d'iris. **rlen** correspond au Nombre d'apprentissage ici 500 et **alpha** au Coefficient d'apprentissage. On peut utiliser la commande plot pour afficher la carte celle-ci comporte plusieurs **type** nous allons en voir 4 exemples suivantes: 	
+#' 	
+#' ### Différentes types de carte 	
+#' 	
+#' **Vecteur de poids**	
+#' 	
+#' Les vecteurs de poids , ou **codes**, sont constitués de valeurs normalisées des variables originales utilisées pour générer le SOM. Le vecteur de poids de chaque nœud est représentatif/similaire des échantillons mis en correspondance avec ce nœud. En visualisant les vecteurs de poids sur la carte, nous pouvons voir des modèles dans la distribution des échantillons et des variables. La visualisation par défaut des vecteurs de poids est un "diagramme en éventail", dans lequel des représentations individuelles en éventail de l'ampleur de chaque variable du vecteur de poids sont affichées pour chaque nœud. Ici on peut voir qu'aucune des quatre variables n'est réduite où le vert est une variable de longueur de sépale, le rose est une variable de longueur de pétale, le jaune est une variable de largeur de sépal et le blanc est une variable de largeur de pétale .	
+#' 	
+#' 	
+par(mfrow=c(1,2))	
+plot(carte, type="code")	
+#' 	
+#' 	
+#' 	
+#' 	
+#' **Temps d'apprentissage**	
+#' 	
+#' Au fur et à mesure que les itérations de formation SOM progressent (**Training Progress**), la distance entre les poids de chaque nœud et les échantillons représentés par ce nœud est réduite. Idéalement, cette distance devrait atteindre un plateau minimum. Cette option de tracé montre la progression dans le temps. Si la courbe diminue continuellement, il faut plus d'itérations. On utilise le type **changes**	
+#' 	
+#' 	
+plot(carte, type="changes")	
+#' 	
+#' 	
+#' Le graphique des changements indique que **la courbe atteint à peu près un plateau au niveau de 300 itérations ce qui semble etre un bon modèle**.	
+#' 	
+#' 	
+#' 	
+#' **U-MATRIX**	
+#' 	
+#' Si nous voulons voir les nœuds qui ont les voisins les plus proches ou les plus éloignés, nous pouvons tracer un graphique basé sur les voisins éloignés **dist.neighbours**  somme des distances aux voisins immédiats pour chaque nœud. Les nœuds qui ont des couleurs plus sombres signifient que les nœuds ont une entrée vectorielle plus proche, tandis que les nœuds qui ont des couleurs plus claires signifient que les nœuds ont des entrées vectorielles plus éloignées. Les zones avec de grandes distances indiquent que les nœuds sont beaucoup plus dissemblables - et indiquent les frontières naturelles entre les groupes de nœuds. La matrice U peut être utilisée pour identifier les groupes de nœuds dans la carte SOM, **ici on voit à peu près 3 groupes se dégager avec des palettes grises (Species) voire blanches.**	
+#' 	
+#' 	
+plot(carte,type="dist.neighbours", main = "Distance entre chaque nœud et ses voisins")	
+#' 	
+#' 	
+#' 	
+#' ** Les cartes thermiques**	
+#' 	
+#' Les cartes thermiques **Heatmaps** sont peut-être la visualisation la plus importante possible pour les cartes auto-organisées. Une carte thermique SOM **permet de visualiser la répartition d'une seule variable sur la carte**. En général, un processus d'investigation SOM implique la création de plusieurs cartes thermiques, puis la comparaison de ces cartes thermiques pour identifier les zones intéressantes sur la carte. Il est important de se rappeler que les positions individuelles des échantillons ne passent pas d'une visualisation à l'autre, la carte est simplement colorée par différentes variables. La carte thermique de Kohonen par défaut est créée en utilisant le type	
+#' **"property"**, puis en fournissant une des variables de l'ensemble des poids des nœuds. Dans ce cas, nous visualisons le niveau d'éducation moyen sur le SOM.	
+#' 	
+#' 	
+coolBlueHotRed <- function(n, alpha = 1) {	
+ rainbow(n, end=4/6, alpha=alpha)[n:1]	
+}	
+	
+par(mfrow=c(2,2))	
+for (j in 1:4){	
+  plot(carte,type="property",property=carte$codes$x[,j],palette.name=coolBlueHotRed,main=colnames(iris)[j],cex=0.5)	
+}	
+#' 	
+#' 	
+#' 	
+#' ## Clustering et segmentation au-dessus de la carte auto-organisée 	
+#' 	
+#' Une méthode de clustering peut être effectué sur les nœuds SOM pour isoler des groupes d'échantillons ayant des mesures similaires. L'identification manuelle des clusters est complétée par l'exploration des cartes thermiques pour un certain nombre de variables et la rédaction d'un historique sur les différentes zones de la carte. Une estimation du nombre de cluster qui conviendrait peut être établie à l'aide d'un algorithme **kmeans** par la méthode du coude ont le voit dans le graphique ci dessous et on sais dejà que le nombre de cluster vaut 3. 	
+#' 	
+#' ### Nombre optimal de Cluster	
+#' 	
+#' j'ai utilisé la fonction **fviz_nbclust** de la librairie factoextra, wss correspond à la méthode du coude	
+#' 	
+#' 	
+#library(factoextra)	
+fviz_nbclust(scale(iris[, -5]), kmeans, method = "wss")+	
+geom_vline(xintercept = 3, linetype = 2)	
+#' 	
+#' 	
+#' **Le nombre de cluster optimal est donc de 3 sur le graphe ci desssus ont aurait aussi pu choisir 2 mais nous savons déja qu'il y'en a 3 pour les données iris.**	
+#' 	
+#' 	
+#' ### Clustering des nœuds. 	
+#' 	
+#' La classification automatique est un intérêt des cartes topologiques de Kohonen et les nœuds sont un excellent point de départ pour un regroupement itératif en classes. La **classification hiérarchique ascendante (CAH)** une méthode de clustering qui est est souvent utilisée dans ce contexte.	
+#' 	
+#' Nous calculons la distance entre les nœuds (entre les livres de codes) dans la carte (dist), puis nous effectuons un CAH (hclust) et nous regrouperons avec 3 couleurs  	
+#' 	
+#' 	
+	
+iris.sc = scale(iris[index, 1:4])  #on normalise 	
+coolBlueHotRed <- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}  # nos 3 couleurs	
+groups = 3	
+iris.hc = cutree(hclust(dist(carte$codes$x)), groups)	
+# plot	
+par(mfrow=c(1,2))	
+plot(carte, type="codes", bgcol=rainbow(groups)[iris.hc])	
+	
+   	
+add.cluster.boundaries(carte, iris.hc)  # lignes noires pour séparer nos 3 clusters	
+#' 	
+#' 	
+#' Nous clustering peut être effectué sur les nœuds SOM 	
+#' 	
+#' ## Prévision et conslusion 	
+#' 	
+#' 	
+#' On peut obtenir des prédictions pour les 3 iris en se basant uniquement sur la cartographie des caractéristiques de l'échantillon. (apprentissage non supervisé)	
+#' 	
+#' 	
+#' 	
+predicted_train <-predict(carte,  newdata = test_ ,whatmap = "x")	
+#' 	
+#' 	
+#' 	
+mat<-table(predicted_train$predictions$Species, iris[-index,5])	
+	
+taux = sum(diag(mat))/sum(mat)	
+mat	
+taux	
+	
+#' 	
+#' 	
+#' On obtient une confusion. entre virginica et  versicolor avec un taux de **97.7%**	
+#' 	
+#' On peut aussi effectuer voir les prédiction pour toutes les couches utilisées dans la formation , donc en tenant compte de Species (apprentissage supervisé)	
+#' 	
+#' 	
+predicted_train <-predict(carte,  test_)	
+#' 	
+#' 	
+#' 	
+mat<-table(predicted_train$predictions$Species, iris[-index,5])	
+	
+taux = sum(diag(mat))/sum(mat)	
+mat	
+taux	
+	
+#' 	
+#' 	
+#' On peut voir qu’il n’y a pas eu d’erreur taux de **100%.**	
+#' 	
+#' 	
+#' 	
+#' 	
+#' \newpage	
+#' 	
+#' # Apprentissage par Renforcement 	
+#' 	
+#' ## Introduction.	
+#' L'apprentissage par renforcement, juxtaposé à l'apprentissage supervisé et à l'apprentissage non supervisé, sont les trois principales catégories d'apprentissage automatique.	
+#' L'apprentissage par renforcement est peut-être un terme peu familier, mais c'est en fait l'une des technologies de base de l'intelligence artificielle, et ses applications sont très variées. Parmi les exemples célèbres, citons l'IA qui bat les humains au jeu de Go et l'IA qui fonctionne dans des voitures à conduite automatique. Les autres domaines d'application de l'apprentissage par renforcement comprennent la marche bipède robotisée et la finance. Quel type de technologie est donc l'apprentissage par renforcement ?	
+#' 	
+#' 	
+#' 	
+#' ## Aperçu de l'apprentissage du renforcement	
+#' 	
+#' 	
+#' L'apprentissage par renforcement, l'étude est que l'agent apprend du processus d'interaction avec l'environnement et apprend à agir sur l'environnement, afin que les meilleures incitations puissent être obtenues de l'environnement	
+#' 	
+#' 	
+#' 	
+#' 	
+#' A titre d'exemple, imaginez que vous vous entraînez à tirer au football. Le flux de la pratique devrait ressembler à quelque chose comme ça.	
+#' 	
+#'     1-Savoir où se trouvent le ballon et le but	
+#'     2-Réfléchir à l'angle de vue à adopter	
+#'     3-Prendre une décisison de Tir.	
+#'     4-Réfléchir à la question de savoir si le tir est celui que vous pensiez qu'il serait	
+#'     5-Retour au point 1.	
+#'     	
+#'     	
+#' 	
+#' C'est exactement ce que nous essayons de réaliser par tâtonnements (dans ce cas, en nous améliorant dans le tir). L'idée de l'apprentissage par renforcement est la même que ci-dessus, mais pour la traiter mathématiquement, nous allons définir les termes suivants: 	
+#' 	
+#' 	
+#'    1-Connaître la position de la balle et le but (dans l'environnement au moment $t$ à l'État $s_t$)	
+#' 	
+#'    2-Réfléchir à l'angle sous lequel il faut donner le coup de pied (Déterminer l'action à à effectuer $a_t$ selon la       	
+#'       probabilité conditionnelle **$\pi(a_t\mid s_t)$** appelée **la politique***)	
+#' 	
+#'    3-Prise de décision du Tir ( passage à l'état $s_{t+1}$ au temps t+1, déterminé par la probabilité de transition d'état **$p(s_{t+1}\mid s_t, a_t)$** )	
+#' 	
+#'    4-Regardez en arrière et réfléchissez si vous avez tiré comme prévu (Obtenez la récompense par la fonction de récompense **$R(s_t, a_t, s_{t+1})$**	
+#' 	
+#'    5-Retour au point 1.	
+#' 	
+#' 	
+#' Ce processus peut être décrit comme suit:	
+#' 	
+#' 	
+#' 	
+#' 	
+#' 	
+#' 	
+#' 	
+#' Les termes définis ici sont résumés comme le processus de décision Markov. (Bien que les mesures ne soient pas initialement incluses dans la définition, elles devraient être revues.	
+#' 	
+#' ## Définition : **Processus de décision Markov (fini)**	
+#' 	
+#' 　(fini) espace d'**état**: $S = \{s_1, s_2, \ldots\}$	
+#'  	
+#' 　(fini) Espace d'**action**: $A = \{a_1, a_2, \ldots\}$	
+#'  	
+#' 　Politique $\pi(a_t\mid s_t)$	
+#'  	
+#' 　Probabilité de transition d'état $P : S\times A\times S\to [0,1]$	
+#'  	
+#' 　Fonction de récompense $R : S\times A\times S \to \mathbb{R}$	
+#' 　	
+#'  	
+#' L'agent apprend une **politique** $π$ qui maximise la somme des futures récompenses dans l'itération ci-dessus.	
+#' 	
+#' En d'autres termes, la fonction objective pour l'Agent ou la récompense future est: 	
+#' 	
+#' $G_t = \sum_{t=0}^{\infty}\gamma^t R(s_t, a_t, s_{t+1})$	
+#' 	
+#' Dans ce cas, il sera le même que celui de l'année précédente. Un taux d'actualisation $\gamma\in[0, 1]$ a été introduit ici. 	
+#' 	
+#' Il devient un paramètre qui détermine si l'accent est mis sur les récompenses immédiates ou futures. En cas de tâtonnement dans le cadre du processus Markov, les données $(s_t, a_t, s_{t+1}, r_t)$ peuvent être représentées par un ensemble. 	
+#' 	
+#' C'est ce qu'on appelle les **données épisodiques**. Cependant, nous avons fixé $r_t = R(s_t, a_t, s_{t+1})$.	
+#' 	
+#' Pour les besoins de la discussion, définissons deux fonctions.	
+#' 	
+#' ## Définition : Fonction de valeur d'état et fonction de valeur d'action: 	
+#' 	
+#' 	
+#' Fonction de valeur d'État $V^\pi(s) = \mathbb{E}_{\pi, P}\left[\sum_{t=0}^{\infty}\gamma^t R(s_t, a_t, s_{t+1}) \mid s_0 = s\right]$	
+#' 	
+#' Fonction de valeur comportementale $Q^\pi(s, a) = \mathbb{E}_{\pi, P}\left[\sum_{t=0}^{\infty}\gamma^t R(s_t, a_t, s_{t+1}) \mid s_0 = s, a_0 = a\right]$	
+#' 	
+#' Toutefois, si $\mathbb{E}_{\pi, P}[ ]$	
+#' représente l'opération moyenne sur les données épisodiques lorsque l'agent essaie selon une politique $\pi$ et une probabilité de transition d'état $P$. Comme son nom l'indique, la fonction de valeur d'état indique la valeur de chaque état $S$, et la fonction de valeur d'action indique la valeur de chaque action $A$ dans chaque état $S$ respectivement.	
+#' 	
+#' Les deux expressions sont très similaires, mais ont en fait une relation récursive comme suit:	
+#' 	
+#' 	
+#' $\begin{align*}	
+#'     Q^\pi(s, a) &= \mathbb{E}_{\pi, P}\left[\sum_{t=0}^{\infty}\gamma^t R(s_t, a_t, s_{t+1}) \mid s_0 = s, a_0 = a\right]\\	
+#'                   &= \mathbb{E}_{\pi, P}\left[ R(s,a,s_1) + \sum_{t=1}^{\infty}\gamma^tR(s_t, a_t, s_{t+1}) \right]\\	
+#'                   &= R(s, a, s_1) + \mathbb{E}_{\pi, P}\left[\gamma\sum_{t=0}^{\infty}\gamma^tR(s_t, a_t, s_{t+1})\right]\\	
+#'                   &= \mathbb{E}_{s_1\sim P(s_1\mid s, a)}\left[R(s,a,s_1) + \mathbb{E}_{\pi, P}\left[\gamma\sum_{t=0}^{\infty}\gamma^tR(s_t, a_t, s_{t+1})\mid s_0 = s_1\right]\right] \\	
+#'                   &= \mathbb{E}_{s_1\sim P(s_1\mid s, a)}\left[R(s,a,s_1) +\gamma V^\pi(s_1)\right]\\	
+#'                   \\	
+#'     V^\pi(s) &= \mathbb{E}_{\pi, P}\left[\sum_{t=0}^{\infty}\gamma^t R(s_t, a_t, s_{t+1}) \mid s_0 = s\right]\\	
+#'                &= \mathbb{E}_{a\sim \pi(a\mid s)}\left[Q^\pi(s, a)\right]	
+#' \end{align*}$	
+#' 	
+#' ## Politique optimale	
+#' 	
+#' Maintenant, le but de l'apprentissage par renforcement est de découvrir **la politique optimale $\pi^{∗}$**. 	
+#' 	
+#' Maintenant, considérons la fonction de valeur d'état optimale et la fonction de valeur d'action. La fonction de valeur d'état optimale est $V^*(s) = \max_\pi V^\pi(s)$, et la fonction de valeur comportementale optimale est $Q^*(s,a) = \max_\pi Q^\pi(s,a)$. De plus, la fonction de valeur optimale de l'état est $V^*(s) = \max_a Q^*(s, a)$ puisque l'action optimale a est adoptée dans l'état $s$ et les transitions ultérieures sont basées sur les mesures optimales. De ce qui précède, on peut déduire l'équation de relation suivante:	
+#' 	
+#' $\begin{align*}	
+#'     Q^*(s, a) &= \mathbb{E}_{s_1\sim P(s_1\mid s, a)}\left[R(s,a,s_1) + \gamma V^*(s_1)\right]\\	
+#'                 &= \mathbb{E}_{s_1 \sim P(s_1\mid s,a)}\left[R(s,a,s_1) + \gamma\max_{a_1} Q^*(s_1, a_1)\right]	
+#' \end{align*}$	
+#' 	
+#' 	
+#' Cette équation dans laquelle la fonction optimale action-valeur $Q^*$ est satisfaite est appelée **équation de Bellman**, et la politique optimale $\pi^*(a\mid s) = \delta(a - \arg\max_aQ^*(s,a))$	
+#' 	
+#' Par exemple, la fonction de valeur d'action pour un processus de Markov fini peut être représentée par la matrice suivante:	
+#' 	
+#' $Q = \left(	
+#'     \begin{array}{ccc}	
+#'       Q(s_1, a_1) & Q(s_1, a_2) & Q(s_1, a_3) \\	
+#'       Q(s_2, a_1) & Q(s_2, a_2) & Q(s_2, a_3) \\	
+#'       Q(s_3, a_1) & Q(s_3, a_2) & Q(s_3, a_3)	
+#'     \end{array}	
+#'   \right)$	
+#' 	
+#' 	
+#' C'est ce qu'on appelle une table de recherche, qui est intuitive et facile à comprendre. 	
+#' 	
+#' Une fois que vous avez la fonction de valeur optimale, vous pouvez facilement déterminer la politique optimale, c'est-à-dire que pour n'importe quel état, vous pouvez choisir l'action qui maximise la fonction de valeur. Toute politique gourmande concernant la fonction de valeur optimale est considérée comme la politique optimale.	
+#' 	
+#' Il semble que tant que l'équation d'optimalité de Bellman est résolue explicitement, la politique optimale est trouvée. Mais cette méthode n'est qu'une théorie et ne fonctionne fondamentalement que si au moins les hypothèses suivantes sont remplies:	
+#' 	
+#' $\bullet$ Bonne capacité à modéliser avec précision l'environnement	
+#' 	
+#' $\bullet$ Des ressources suffisantes pour un calcul énorme	
+#' 	
+#' $\bullet$  Satisfaire le Processus de Markov	
+#' 	
+#' De toute évidence, dans la pratique, ces trois hypothèses sont difficiles à satisfaire et il est généralement impossible de résoudre directement l'équation d'optimalité de Bellman ci-dessus pour obtenir la politique optimale. Toutes les méthodes approximatives sont utilisées pour résoudre l'équation d'optimalité de Bellman, comme les méthodes de Monte Carlo par exemple.	
+#' 	
+#' 	
+#' ### Méthode de Monte Carlo**	
+#' 	
+#' Rappelons et réecrivons d'abord que $V(s) = \mathbb{E}[ G_t \vert S_t=s]$ avec $G_t = R_{t+1} + \gamma R_{t+2} + \dots = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}$, la récompense future, également appelée retour, est une somme totale de récompenses actualisées à l'avenir. Les méthodes de Monte-Carlo (MC) utilisent une idée simple: elles apprennent des épisodes d'expérience brute sans modéliser la dynamique environnementale et calculent le rendement moyen observé comme une approximation du rendement attendu. Pour calculer le retour empirique $G_t$, les méthodes MC doivent apprendre des épisodes complets $S_1, A_1, R_2, \dots, S_T$ pour calculer $G_t = \sum_{k=0}^{T-t-1} \gamma^k R_{t+k+1}$  et tous les épisodes doivent finalement se terminer.	
+#' 	
+#' Le rendement empirique moyen pour l'état s est:	
+#' 	
+#' $V(s) = \frac{\sum_{t=1}^T \mathbb{1}[S_t = s] G_t}{\sum_{t=1}^T \mathbb{1}[S_t = s]}$  où $\mathbb{1}[S_t = s]$ est une fonction d'indicateur binaire. Nous pouvons compter la visite des États à chaque fois afin qu'il puisse exister plusieurs visites d'un État dans un épisode («chaque visite»), ou seulement la compter la première fois que nous rencontrons un État dans un épisode («Première visite»). 	
+#' 	
+#' Ce mode d'approximation peut être facilement étendu aux fonctions valeur-action en comptant $(s, a)$ paire:	
+#' 	
+#' $\bullet$ $Q(s, a) = \frac{\sum_{t=1}^T \mathbb{1}[S_t = s, A_t = a] G_t}{\sum_{t=1}^T \mathbb{1}[S_t = s, A_t = a]}$. 	
+#' 	
+#' Pour apprendre la politique optimale par MC, nous l'itérons de la manière suivante:	
+#' 	
+#' 	
+#' $\bullet$ 1-Améliorer la politique avec gourmandise par rapport à la fonction valeur actuelle:  $\pi(s) = \arg\max_{a \in \mathcal{A}} Q(s, a)$ 	
+#' 	
+#' $\bullet$ 2-. Générez un nouvel épisode avec la nouvelle politique $\pi$ (c'est-à-dire que l'utilisation d'algorithmes comme $\epsilon$-greedy nous aide à équilibrer l'exploitation et l'exploration.) 	
+#' 	
+#' $\bullet$ 3-Estimez Q en utilisant le nouvel épisode: $q_\pi(s, a) = \frac{\sum_{t=1}^T \big( \mathbb{1}[S_t = s, A_t = a] \sum_{k=0}^{T-t-1} \gamma^k R_{t+k+1} \big)}{\sum_{t=1}^T \mathbb{1}[S_t = s, A_t = a]}$	
+#' 	
+#' ## Technique d'apprentissage par renforcement.	
+#' 	
+#' Tout d'abord introduisons **Algorithme $\epsilon$-Greedy** 	
+#' 	
+#' L'algorithme $\epsilon$-Greedy prend la meilleure action la plupart du temps, mais effectue occasionnellement une exploration aléatoire. 	
+#' 	
+#' La valeur de l'action est estimée en fonction de l'expérience passée en faisant la moyenne des récompenses associées à l'action cible a que nous avons observées jusqu'à présent (jusqu'au pas de temps actuel $t$):	
+#' 	
+#' $\hat{Q}_t(a) = \frac{1}{N_t(a)} \sum_{\tau=1}^t r_\tau \mathbb{1}[a_\tau = a]$ 	
+#' 	
+#' 	
+#' où $\mathbb{1}$ est une fonction d'indicateur binaire 	
+#' et $N_t(a)$ est le nombre de fois où l'action a a été sélectionnée jusqu'à présent, $N_t(a) = \sum_{\tau=1}^t \mathbb{1}[a_\tau = a]$.	
+#' 	
+#' Selon l'algorithme $\epsilon$-Greedy, avec une faible probabilité $\epsilon$ nous prenons une action aléatoire, mais sinon (qui devrait être la plupart du temps, probabilité 1-$\epsilon$) nous choisissons la meilleure action que nous avons apprise jusqu'à présent: $\hat{a}^{*}_t = \arg\max_{a \in \mathcal{A}} \hat{Q}_t(a)$.	
+#' 	
+#' 	
+#' ### Sarsa	
+#' 	
+#' «SARSA» fait référence à la procédure de mise à jour de la valeur Q en suivant une séquence de $\dots, S_t, A_t, R_{t+1}, S_{t+1}, A_{t+1}, \dots.$ : État-action-récompense-État-Action. En SARSA, l'agent commence à l'état 1, effectue l'action 1, et obtient une récompense (récompense 1). Maintenant, il est dans l'état 2 et effectue une autre action (action 2) et obtient la récompense de cet état (récompense 2) avant qu'il ne remonte et mette à jour la valeur de l'action 1, effectuée dans l'état 1.	
+#' 	
+#' Voisi l'algorithme de Sarsa :	
+#' 	
+#' $\bullet$ 1) Au pas de temps $t$, nous partons de l'état $S_t$ et sélectionnons l'action en fonction des valeurs Q, $A_t = \arg\max_{a \in \mathcal{A}} Q(S_t, a)$; $\epsilon$-greed est couramment appliqué. 	
+#' 	
+#' $\bullet$ 2) Avec l'action $A_t$, nous observons la récompense $R_{t + 1}$ et passons à l'état suivant $S_{t + 1}$. 	
+#' 	
+#' $\bullet$ 3) Choisissez ensuite l'action suivante de la même manière qu'à l'étape 1: $A_{t+1} = \arg\max_{a \in \mathcal{A}} Q(S_{t+1}, a)$. 	
+#' 	
+#' $\bullet$ 4) Mettez à jour la fonction de valeur d'action: $Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t))$. 	
+#' 	
+#' $\bullet$ 5) t = t + 1 et répétez à partir de l'étape 1. 	
+#' 	
+#' 	
+#' Dans chaque mise à jour de SARSA, nous devons choisir des actions pour deux étapes en suivant deux fois la politique actuelle (aux étapes 1. et 3.).	
+#' 	
+#' 	
+#' ### Q-Learning	
+#' 	
+#' Le développement du Q-learning (Watkins & Dayan, 1992) est une grande percée dans les premiers jours de l'apprentissage par renforcement.	
+#' 	
+#' En Q-learning de l'agent commence dans l'état 1, effectue l'action 1 et obtient une récompense (récompense 1).	
+#' Il regarde ensuite, et voit que la récompense maximale possible pour une action est en état 2.	
+#' Il l'utilise alors pour mettre à jour la valeur de l'action : effectuer l'action 1 dans l'état 1.	
+#' 	
+#' Voisi l'algorithme Q-learning :	
+#' 	
+#' $\bullet$ 1) Au pas de temps $t$, nous partons de l'état $S_t$ et sélectionnons l'action en fonction des valeurs Q, $A_t = \arg\max_{a \in \mathcal{A}} Q(S_t, a)$ ; $\epsilon$-greed est couramment appliqué. 	
+#' 	
+#' 	
+#' $\bullet$ 2) Avec l'action $A_t$, nous observons la récompense $R_{t+1}$ et passons à l'état suivant $S_{t+1}$.	
+#' 	
+#' $\bullet$ 3) Mettez à jour la fonction de valeur d'action: $Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma \max_{a \in \mathcal{A}} Q(S_{t+1}, a) - Q(S_t, A_t))$. 	
+#' 	
+#' 	
+#' $\bullet$ 4) t = t + 1 et répétez à partir de l'étape 1. 	
+#' 	
+#' 	
+#' Les deux premières étapes sont les mêmes que dans SARSA. 	
+#' 	
+#' À l'étape 3., Le Q-Learning ne suit pas la politique actuelle pour sélectionner la deuxième action mais estime plutôt $Q^*$ parmi les meilleures valeurs Q indépendamment de la politique actuelle.	
+#' 	
+#' 	
+#' 	
+#' # Conclusion + Références	
+#' 	
+#' Tout au long de ce projet nous avons pu voir l’apport des réseaux de neurones dans plusieurs problème d’apprentissage, que ça soit avec la régression dans la première partie ou avec la classification dans les autres, des méthode comme les carte de Kohonen s’avèrent être simple et particulièrement efficace par leur rapidité dans la classification, notamment avec les réseaux de neurone profond qui sont aujourd’hui particulièrement efficace et très puissant, on a vu le RNN avec les LSTM mais on aurait aussi pu voir les CNN ou les DNN, nul ne devrait douter que l’intelligence artificiel appuyé sur les réseaux de neurone représente une solution d’avenir pour contribuer à faciliter la vie des hommes et aussi rendre meilleur notre perception par rapport à plusieurs problématique.	
+#' 	
+#' https://tel.archives-ouvertes.fr/tel-01868313/document	
+#' https://fr.wikipedia.org/wiki/R%C3%A9tropropagation_du_gradient	
+#' http://www.di.fc.ul.pt/~jpn/r/neuralnets/neuralnets.html	
+#' https://scikit-learn.org/stable/modules/neural_networks_supervised.html	
+#' https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_blobs.html https://rtavenar.github.io/teaching/neuralnets_td/html/rnn.html	
+#' https://cran.r-project.org/web/packages/kohonen/kohonen.pdf	
+#' https://meritis.fr/ia/cartes-topologiques-de-kohonen/	
+#' https://www.shanelynn.ie/self-organising-maps-for-customer-segmentation-using-r/	
+#' https://hackernoon.com/understanding-architecture-of-lstm-cell-from-scratch-with-code-8da40f0b71f4	
+#' https://keras.io/	
+#' http://renom.jp/id/notebooks/tutorial/reinforcement_learning/DQN-theory/notebook.html	
+#' https://mitpress.mit.edu/books/reinforcement-learning	
+#' http://www.cs.rhul.ac.uk/~chrisw/new_thesis.pdf	
+#' http://chercheurs.lille.inria.fr/~ghavamza/RL-EC-Lille/Lecture2.pdf	
+#' https://www-igm.univ-mlv.fr/~dr/XPOSE2014/Machin_Learning/A_Q-Learning.html	
